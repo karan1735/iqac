@@ -281,9 +281,6 @@
 
             <div id="tab2" class="tab-content outer-tab-content">
                 <h4 class="heading">Anna University Affiliation</h4>
-
-
-
                 <h5> Affiliation Orders: </h5>
                 <a name="_GoBack"></a>
                 <table class="table table-stripped" cellspacing="0" cellpadding="0">
@@ -10392,14 +10389,14 @@
                                     <td width="80">
                                         <p align="center"> 120 </p>
                                     </td>
-                                    <td width="155" rowspan="25" valign="top">
+                                    <td width="155" rowspan="20" valign="top">
                                         <p align="center"><a href="docs/aicte_approvals/AICTE_Approval_2022_23.pdf">
                                                 F.No. Southern/1-9320413679/2022/EOA</a></p>
                                     </td>
-                                    <td width="80" rowspan="25" valign="top">
+                                    <td width="80" rowspan="20" valign="top">
                                         <p align="center"> 07.07.2022</p>
                                     </td>
-                                    <td width="75" rowspan="25" valign="top">
+                                    <td width="75" rowspan="20" valign="top">
                                         <p align="center"> 2022-23</p>
                                     </td>
                                 </tr>

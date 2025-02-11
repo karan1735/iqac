@@ -21,39 +21,116 @@
     <link rel="stylesheet" href="styles.css">
     <script src="script.js"></script>
     <style>
-    .image-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        /* Responsive columns */
-        gap: 10px;
-        /* Space between grid items */
-        margin: 20px 0;
-        /* Margin above and below the grid */
-    }
-
-    .image-item {
-        border: 1px solid #ccc;
-        /* Optional border for image items */
-        border-radius: 4px;
-        /* Optional rounded corners */
-        overflow: hidden;
-        /* Ensure images don't overflow */
-        text-align: center;
-        /* Center align text */
-    }
-
-    .image-item img {
+    .gallery-container {
         width: 100%;
-        /* Make images responsive */
-        height: auto;
-        /* Maintain aspect ratio */
     }
 
-    .image-item p {
-        margin: 5px 0;
-        /* Margin for the filename */
-        font-size: 14px;
-        /* Font size for filename */
+    .gallery-category {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 15px;
+
+    }
+
+    .gallery-item {
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s;
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover img {
+        transform: scale(1.1);
+    }
+
+    /* Lightbox Styles */
+    .lightbox {
+        display: none;
+        position: fixed;
+        z-index: 10;
+        padding-top: 150px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        backdrop-filter: blur(16px) saturate(180%);
+        -webkit-backdrop-filter: blur(16px) saturate(180%);
+        background-color: rgba(0, 0, 0, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.125);
+    }
+
+    .lightbox-content {
+        margin: auto;
+        display: block;
+        margin-left: 32%;
+        width: 80%;
+        max-width: 700px;
+        animation: fadeIn 0.4s;
+        border-radius: 10px;
+    }
+
+    .close {
+        position: absolute;
+        top: 80px;
+        right: 65px;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .prev:hover {
+        text-decoration: none;
+        color: blue;
+    }
+
+    .next:hover {
+        text-decoration: none;
+        color: blue;
+    }
+
+    .close:hover {
+        color: white;
+    }
+
+    .prev,
+    .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        padding: 16px;
+        color: white;
+        font-weight: bold;
+        font-size: 40px;
+        transition: 0.3s;
+        user-select: none;
+    }
+
+    .prev {
+        left: 20%;
+    }
+
+    .next {
+        right: 10%;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
     }
     </style>
 </head>
@@ -64,29 +141,78 @@
     <nav id="navMenu">
         <div id="navbar"></div>
     </nav>
-
     <main>
         <h1>GALLERY</h1><br>
-        <?php
-$directory = 'gallery/'; // Specify the directory containing the images
-$images = glob($directory . '*.{jpg,jpeg,png,gif}', GLOB_BRACE); // Get all image files
+        <div class="gallery-container">
+            <?php
+    $imagesDir = 'gallery/';
+    $years = glob($imagesDir . '*', GLOB_ONLYDIR); // Scan for year directories
+    $imageIndex = 0;
 
-// Display images in a grid format
-if (count($images) > 0) {
-    echo '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">';
-    foreach ($images as $image) {
-        echo '<div style="border: 1px solid #ddd; padding: 5px; text-align: center;">';
-        echo '<img src="' . $image . '" alt="Image" style="width: 100%; height: auto;">';
-        echo '</div>';
+    if (count($years) > 0) {
+        foreach ($years as $yearDir) {
+            $year = basename($yearDir);
+            $months = glob($yearDir . '/*', GLOB_ONLYDIR); // Scan for month directories
+
+            if (count($months) > 0) {
+                echo "<h3>$year</h3>";
+                foreach ($months as $monthDir) {
+                    $month = basename($monthDir);
+                    $images = glob($monthDir . '/*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+
+                    if (count($images) > 0) {
+                        echo "<h3>$month</h3>";
+                        echo "<div class='gallery-category'>";
+                        foreach ($images as $image) {
+                            echo "<div class='gallery-item'>
+                                    <img src='$image' alt='Gallery Image' data-index='$imageIndex' onclick='openLightbox($imageIndex)'>
+                                  </div>";
+                            $imageIndex++;
+                        }
+                        echo "</div>";
+                    }
+                }
+            }
+        }
+    } else {
+        echo "<p>No images found in the directory.</p>";
     }
-    echo '</div>';
-} else {
-    echo '<p>No images found.</p>';
-}
-?>
+    ?>
+
+        </div>
+
+        <!-- Lightbox Modal -->
+        <div id="lightbox" class="lightbox">
+            <span class="close" onclick="closeLightbox()">&times;</span>
+            <img class="lightbox-content" id="lightbox-img">
+            <a class="prev" onclick="changeImage(-1)">&#10094;</a>
+            <a class="next" onclick="changeImage(1)">&#10095;</a>
+        </div>
 
     </main>
 
 </body>
+<script>
+let currentIndex = 0;
+const images = document.querySelectorAll('.gallery-item img');
+
+function openLightbox(index) {
+    currentIndex = index;
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    lightbox.style.display = 'block';
+    lightboxImg.src = images[currentIndex].src;
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').style.display = 'none';
+}
+
+function changeImage(step) {
+    currentIndex = (currentIndex + step + images.length) % images.length;
+    document.getElementById('lightbox-img').src = images[currentIndex].src;
+}
+</script>
 
 </html>

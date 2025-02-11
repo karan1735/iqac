@@ -92,16 +92,6 @@
                 <span>Dr.T.Abirami</span>
                 <p class="job"> Coordinator, IQAC</p>
             </div>
-
-            <div id="5" class="card1">
-                <div class="card-border-top">
-                </div>
-                <div class="profile-image" style="background-image: url('Team/venkatesan.jpg');">
-                </div>
-                <span>Dr.B.Venkatesan</span>
-                <p class="job"> Coordinator, IQAC</p>
-            </div>
-
             <div id="6" class="card1">
                 <div class="card-border-top">
                 </div>
@@ -111,6 +101,16 @@
                 <span>Dr.V.Surendar</span>
                 <p class="job"> Coordinator, IQAC</p>
             </div>
+            <div id="5" class="card1">
+                <div class="card-border-top">
+                </div>
+                <div class="profile-image" style="background-image: url('Team/venkatesan.jpg');">
+                </div>
+                <span>Dr.B.Venkatesan</span>
+                <p class="job"> Coordinator, IQAC</p>
+            </div>
+
+
 
             <div id="7" class="card1">
                 <div class="card-border-top">
@@ -198,7 +198,8 @@
         ?>
 
 
-        <footer id="footer"></footer>
+        <h6 style="text-align: center;">Devoloped By Karan T - 22ITR041 - Department of Information technology</h6>
+        <h6 style="text-align: center;">Maintained by IQAC Cell</h6>
     </main>
 
 </body>

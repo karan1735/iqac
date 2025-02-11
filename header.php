@@ -54,10 +54,7 @@
     border-radius: 10px;
     backdrop-filter: blur(10px);
     letter-spacing: 1px;
-    /* Adjust spacing between letters */
     word-spacing: 5px;
-    /* Adjust spacing between words */
-
 }
 
 /* Styling the contact link */
@@ -68,18 +65,13 @@
     font-weight: bold;
     padding: 4px 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 0 12px rgba(17, 146, 255, 0.8), 0 0 24px rgba(17, 0, 255, 0.6);
+    transition: background-color 0.3s, box-shadow 0.3s ease-in-out;
     width: 100%;
-    justify-self: center;
 }
 
 .contact-link:hover {
-    color: #ffffff;
-    background-color: #050268;
     text-decoration: none;
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
 }
 
 

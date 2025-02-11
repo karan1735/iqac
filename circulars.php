@@ -70,26 +70,69 @@
         <div id="navbar"></div>
     </nav>
     <main>
-        <h1>CIRCULARS</h1><br>
+        <h1>CIRCULARS</h1>
         <?php
-$folderPath = 'files/circular';
+$folderPath = 'files/circular/2023-2024';
+$archivePath = 'files/circular/archive';
 $files = scandir($folderPath);
+$archiveFiles = scandir($archivePath);
 
-echo "<div class='file-container'>";
-rsort($files);
+$oneWeekAgo = time() - (7 * 24 * 60 * 60); // Time 7 days ago
 
+// Ensure the archive folder exists
+if (!is_dir($archivePath)) {
+    mkdir($archivePath, 0777, true);
+}
+
+// Move old files to archive
 foreach ($files as $file) {
+    $filePath = "$folderPath/$file";
     if ($file !== '.' && $file !== '..' && pathinfo($file, PATHINFO_EXTENSION) === 'pdf') {
-        echo "<div class='pdf-wrapper'>
-                <iframe src='$folderPath/$file#toolbar=0&navpanes=0&scrollbar=0' width='100%' height='100%' scrolling='no'></iframe>
-                <a href='$folderPath/$file' target='_blank' class='overlay-link'></a>
-                <p class='file-name'>$file</p>
-              </div>";
+        if (filemtime($filePath) < $oneWeekAgo) {
+            rename($filePath, "$archivePath/$file");
+        }
     }
 }
 
+// Refresh file lists
+$files = array_diff(scandir($folderPath), array('.', '..'));
+$archiveFiles = array_diff(scandir($archivePath), array('.', '..'));
+
+echo "<h1>CIRCULARS</h1>";
+echo "<h2 class='folder-name'>Current Circulars</h2>";
+echo "<div class='file-container'>";
+
+rsort($files);
+
+foreach ($files as $file) {
+    echo "<div class='pdf-wrapper'>
+            <iframe src='$folderPath/$file#toolbar=0&navpanes=0&scrollbar=0' width='100%' height='100%' scrolling='no'></iframe>
+            <a href='$folderPath/$file' target='_blank' class='overlay-link'></a>
+            <p class='file-name'>$file</p>
+          </div>";
+}
+
 echo "</div>";
+
+// Display archived files
+if (!empty($archiveFiles)) {
+    echo "<h2 class='folder-name'>Archived Circulars</h2>";
+    echo "<div class='file-container'>";
+
+    rsort($archiveFiles);
+
+    foreach ($archiveFiles as $file) {
+        echo "<div class='pdf-wrapper'>
+                <iframe src='$archivePath/$file#toolbar=0&navpanes=0&scrollbar=0' width='100%' height='100%' scrolling='no'></iframe>
+                <a href='$archivePath/$file' target='_blank' class='overlay-link'></a>
+                <p class='file-name'>$file</p>
+              </div>";
+    }
+
+    echo "</div>";
+}
 ?>
+
 
     </main>
 

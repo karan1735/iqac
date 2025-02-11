@@ -56,10 +56,6 @@ nav {
   overflow-y: auto;
   overflow-x: hidden;
   font-size:medium;
-  /* box-shadow: 10px -2px 300px -14px rgba(0,0,0,0.30);
-  -webkit-box-shadow: 10px -2px 300px -14px rgba(0,0,0,0.30);
-  -moz-box-shadow: 10px -2px 300px -14px rgba(0,0,0,0.30); */
-
 }
 
 nav::-webkit-scrollbar {
@@ -110,11 +106,19 @@ nav li a {
 nav li a:hover,
 nav li a.active {
   background-color: #0008ff;
+  text-decoration: none;
   color: #fff;
   margin-left: 10px;
-  box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 
+    0 0 10px rgba(0, 136, 255, 0.6),  /* Outer glow */
+    0 0 20px rgba(0, 136, 255, 0.4),  /* Outer glow spread */
+    inset 5px 5px 10px rgba(0, 0, 0, 0.2); /* Inner shadow */
   transform: translateX(5px);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
+
 
 nav i {
   margin-right: 15px;
@@ -496,16 +500,19 @@ footer {
 /************************************************************************/
 .badge {
   display: inline-block;
-  padding: 8px 8px;
+  justify-items: center;
+  padding: 5px;
   font-size: 10px;
   font-weight: bold;
   color: white;
-  background-color: #ff6b6b;
-  border-radius: 8px;
+  background-color: #f64242;
+  border-radius: 5px;
   text-transform: uppercase;
-  box-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
+  box-shadow: 0 0 12px rgba(255, 107, 107, 0.5);
   animation: glow 1s infinite alternate;
+  margin-left: 20px;
 }
+
 
 @keyframes glow {
   from {
